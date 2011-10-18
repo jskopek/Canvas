@@ -24,8 +24,23 @@
 					ctx.quadraticCurveTo(x, y, x + radius, y); //tl curve
 					ctx.stroke();
 				}
-				
 				roundedRect(ctx, 10,10,100,80,20);
+
+				//fun with animation
+				var ra = 1;
+				var step = 1;
+				var index = 0
+				var i = setInterval(function() {
+					ctx.clearRect(0,0,150,150);
+					roundedRect(ctx, 65,65,20,20,ra);
+					ra += step;
+					console.log(ra);
+					index += 1;
+					if( index % 40 == 0 ) { 
+						step = step * -1.1;
+					}
+				}, 10);
+				
 			}
 		</script>
 		<style type="text/css" media="screen">
