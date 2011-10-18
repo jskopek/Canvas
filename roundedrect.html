@@ -1,0 +1,55 @@
+<html>
+	<head>
+		<meta http-equiv="Content-type" content="text/html; charset=utf-8">
+		<title>Getting started with Canvas</title>
+		<script type="text/javascript" charset="utf-8">			
+			function draw() {
+				var canvas = document.getElementById("getting_started");
+				var ctx = canvas.getContext("2d");
+
+				// quadraticCurveTo(cp1x, cp1y, x, y) // BROKEN in Firefox 1.5 (see work around below)
+				// bezierCurveTo(cp1x, cp1y, cp2x, cp2y, x, y)
+
+				// hearts!
+				ctx.beginPath();
+				var x = 10;
+				var y = 10;
+				var width = 100;
+				var height = 80;
+				var radius = 20;
+				
+				//guide
+				ctx.beginPath();
+				ctx.strokeStyle = "rgba(200,0,0,0.5)";
+				ctx.strokeRect(x,y,width,height);
+				
+				//rect
+				ctx.strokeStyle = "rgba(0,0,200,0.8)";
+				ctx.beginPath();
+				ctx.moveTo(x + radius,y);
+				
+				
+				var endx = x + width;
+				var endy = y + height;
+
+				ctx.lineTo(x - radius + width, y); //t line				
+				ctx.quadraticCurveTo(endx, y, endx, y + radius); //tl curve
+				ctx.lineTo(endx, y + height - radius); //r line
+				ctx.quadraticCurveTo(endx, endy, endx - radius, endy); //br curve
+				ctx.lineTo(x + radius, endy); //b line
+				ctx.quadraticCurveTo(x, endy, x, endy - radius); //bl curve
+				ctx.lineTo(x, y + radius); //l line
+				ctx.quadraticCurveTo(x, y, x + radius, y); //tl curve
+				ctx.stroke();
+			}
+		</script>
+		<style type="text/css" media="screen">
+			#getting_started {
+				border: 1px solid black;
+			}
+		</style>
+	</head>
+	<body id="basics" onload="draw();">
+		<canvas id="getting_started" width="150" height="150"></canvas>
+	</body>
+</html>
