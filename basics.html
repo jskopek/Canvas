@@ -2,9 +2,25 @@
 	<head>
 		<meta http-equiv="Content-type" content="text/html; charset=utf-8">
 		<title>Getting started with Canvas</title>
-		
+		<script type="text/javascript" charset="utf-8">			
+			function draw() {
+				var canvas = document.getElementById("getting_started");
+				var ctx = canvas.getContext("2d");
+				
+				ctx.fillStyle = "rgb(200,0,0)";
+				ctx.fillRect(10,10,55,50);
+				
+				ctx.fillStyle = "rgba(0,0, 200, 0.5)";
+				ctx.fillRect(30,30,55,50);
+			}
+		</script>
+		<style type="text/css" media="screen">
+			#getting_started {
+				border: 1px solid black;
+			}
+		</style>
 	</head>
-	<body id="basics" onload="">
+	<body id="basics" onload="draw();">
 		<canvas id="getting_started" width="150" height="150"></canvas>
 	</body>
 </html>
