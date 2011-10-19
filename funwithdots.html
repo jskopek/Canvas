@@ -4,17 +4,24 @@
 		<title>Getting started with Canvas</title>
 		<script type="text/javascript" charset="utf-8">			
 			var dots = [];
-
+			var canvas;
+			var numDots = 100;
+			
+			function resizeCanvas() {
+				canvas.width = this.window.innerWidth;
+				canvas.height = this.window.innerHeight;
+			}
+			
 			function draw() {
-				var canvasWidth = 400;
-				var canvasHeight = 400;
-				
-				var canvas = document.getElementById("getting_started");
+				canvas = document.getElementById("getting_started");
 				var ctx = canvas.getContext("2d");
 				
+				resizeCanvas();
+				window.onresize = function() { resizeCanvas(); }
+
 				function Dot(ctx) {
-					this.x = Math.floor( Math.random() * canvasWidth );
-					this.y = Math.floor( Math.random() * canvasHeight );
+					this.x = Math.floor( Math.random() * canvas.width );
+					this.y = Math.floor( Math.random() * canvas.height );
 
 					this.moveX = Math.random() * 2 - 1;
 					this.moveY = Math.random() * 2 - 1;
@@ -25,10 +32,10 @@
 					this.x += this.moveX;
 					this.y += this.moveY;
 					
-					if( this.x < 0 ) { this.x = canvasWidth; }
-					if( this.x > canvasWidth ) { this.x = 0; }
-					if( this.y < 0 ) { this.y = canvasHeight; }
-					if( this.y > canvasHeight ) { this.y = 0; }
+					if( this.x < 0 ) { this.x = canvas.width; }
+					if( this.x > canvas.width ) { this.x = 0; }
+					if( this.y < 0 ) { this.y = canvas.height; }
+					if( this.y > canvas.height ) { this.y = 0; }
 				}
 				Dot.prototype.draw = function() {
 					this.ctx.fillStyle = "rgba(200,0,0,1)";
@@ -54,7 +61,7 @@
 					}
 				}
 				
-				for( var i = 0; i < 100; i++ ) {
+				for( var i = 0; i < numDots; i++ ) {
 					var d = new Dot(ctx);
 					dots.push(d);
 				}
@@ -69,7 +76,7 @@
 					
 					//clear screen
 					ctx.fillStyle = "rgb(255,255,255)";
-					ctx.fillRect(0,0,400,400);
+					ctx.fillRect(0,0,canvas.width,canvas.height);
 					
 					//re-draw dots
 					for( var index in dots ) {
