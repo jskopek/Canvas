@@ -1,0 +1,66 @@
+<html>
+	<head>
+		<meta http-equiv="Content-type" content="text/html; charset=utf-8">
+		<title>Getting started with Canvas</title>
+		<script type="text/javascript" charset="utf-8">			
+			function draw() {
+				var canvas = document.getElementById("getting_started");
+				var ctx = canvas.getContext("2d");
+
+				function roundedRect(ctx, x, y, width, height, radius) {
+					var endx = x + width;
+					var endy = y + height;
+
+					ctx.beginPath();
+					ctx.moveTo(x + radius,y);
+
+					ctx.lineTo(x - radius + width, y); //t line				
+					ctx.quadraticCurveTo(endx, y, endx, y + radius); //tl curve
+					ctx.lineTo(endx, y + height - radius); //r line
+					ctx.quadraticCurveTo(endx, endy, endx - radius, endy); //br curve
+					ctx.lineTo(x + radius, endy); //b line
+					ctx.quadraticCurveTo(x, endy, x, endy - radius); //bl curve
+					ctx.lineTo(x, y + radius); //l line
+					ctx.quadraticCurveTo(x, y, x + radius, y); //tl curve
+					ctx.stroke();
+				}
+
+				// quadraticCurveTo(cp1x, cp1y, x, y) // BROKEN in Firefox 1.5 (see work around below)
+				// bezierCurveTo(cp1x, cp1y, cp2x, cp2y, x, y)
+
+				ctx.beginPath();
+				
+				// stage
+				roundedRect(ctx, 15, 15, 300, 300, 20);
+				roundedRect(ctx, 23, 23, 300, 300, 14);
+				roundedRect(ctx, 60, 50, 40, 30, 5);
+				roundedRect(ctx, 60, 110, 40, 15, 5);
+				roundedRect(ctx, 130, 50, 40, 30, 5);
+				roundedRect(ctx, 130, 110, 40, 60, 5);
+				
+				//dots
+				for( var x = 50; x < 200; x += 15 ) { ctx.fillRect(x,35,4,4); }
+				for( var x = 50; x < 200; x += 15 ) { ctx.fillRect(x,95,4,4); }
+				for( var y = 35; y < 200; y += 15 ) { ctx.fillRect(110,y,4,4); }
+
+				// ctx.moveTo(50,35);
+				
+				//pacman
+				ctx.beginPath();
+				ctx.arc(38,38,12,Math.PI / 7, - Math.PI / 7, false);
+				ctx.lineTo(38,38);
+				ctx.fill();
+				
+				ctx.stroke()
+			}
+		</script>
+		<style type="text/css" media="screen">
+			#getting_started {
+				border: 1px solid black;
+			}
+		</style>
+	</head>
+	<body id="basics" onload="draw();">
+		<canvas id="getting_started" width="150" height="150"></canvas>
+	</body>
+</html>
