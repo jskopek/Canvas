@@ -18,49 +18,7 @@
 				
 				resizeCanvas();
 				window.onresize = function() { resizeCanvas(); }
-
-				function Dot(ctx) {
-					this.x = Math.floor( Math.random() * canvas.width );
-					this.y = Math.floor( Math.random() * canvas.height );
-
-					this.moveX = Math.random() * 2 - 1;
-					this.moveY = Math.random() * 2 - 1;
-
-					this.ctx = ctx;
-				}
-				Dot.prototype.move = function() {
-					this.x += this.moveX;
-					this.y += this.moveY;
-					
-					if( this.x < 0 ) { this.x = canvas.width; }
-					if( this.x > canvas.width ) { this.x = 0; }
-					if( this.y < 0 ) { this.y = canvas.height; }
-					if( this.y > canvas.height ) { this.y = 0; }
-				}
-				Dot.prototype.draw = function() {
-					this.ctx.fillStyle = "rgba(200,0,0,1)";
-					this.ctx.fillRect(this.x, this.y, 1, 1);
-				}
-				Dot.prototype.distance = function(dot) { 
-					return Math.sqrt( Math.pow(this.x - dot.x, 2) + Math.pow(this.y - dot.y, 2) );
-				}
-				Dot.prototype.draw_closest = function(dots) {
-					for( var index in dots ) {
-						var dot = dots[index];
-						var dist = this.distance( dot );
-						
-						var cutoff = 50;
-						if( (dist > 0) && (dist < cutoff) ) {
-							var alpha = Math.round( (dist / cutoff) * 10 ) / 30; 
-							this.ctx.beginPath();
-							this.ctx.strokeStyle = "rgba(0,0,0," + alpha + ")";
-							this.ctx.moveTo(this.x, this.y);
-							this.ctx.lineTo(dot.x, dot.y);
-							this.ctx.stroke();
-						}
-					}
-				}
-				
+								
 				for( var i = 0; i < numDots; i++ ) {
 					var d = new Dot(ctx);
 					dots.push(d);
@@ -88,7 +46,50 @@
 					ctx.stroke();
 					
 				}, 50);
+			}		
+			
+			//dot class
+			function Dot(ctx) {
+				this.x = Math.floor( Math.random() * canvas.width );
+				this.y = Math.floor( Math.random() * canvas.height );
+
+				this.moveX = Math.random() * 2 - 1;
+				this.moveY = Math.random() * 2 - 1;
+
+				this.ctx = ctx;
+			}			
+			Dot.prototype.move = function() {
+				this.x += this.moveX;
+				this.y += this.moveY;
+				
+				if( this.x < 0 ) { this.x = canvas.width; }
+				if( this.x > canvas.width ) { this.x = 0; }
+				if( this.y < 0 ) { this.y = canvas.height; }
+				if( this.y > canvas.height ) { this.y = 0; }
 			}
+			Dot.prototype.draw = function() {
+				this.ctx.fillStyle = "rgba(200,0,0,1)";
+				this.ctx.fillRect(this.x, this.y, 1, 1);
+			}
+			Dot.prototype.distance = function(dot) { 
+				return Math.sqrt( Math.pow(this.x - dot.x, 2) + Math.pow(this.y - dot.y, 2) );
+			}
+			Dot.prototype.draw_closest = function(dots) {
+				for( var index in dots ) {
+					var dot = dots[index];
+					var dist = this.distance( dot );
+					
+					var cutoff = 50;
+					if( (dist > 0) && (dist < cutoff) ) {
+						var alpha = Math.round( (dist / cutoff) * 10 ) / 30; 
+						this.ctx.beginPath();
+						this.ctx.strokeStyle = "rgba(0,0,0," + alpha + ")";
+						this.ctx.moveTo(this.x, this.y);
+						this.ctx.lineTo(dot.x, dot.y);
+						this.ctx.stroke();
+					}
+				}
+			}				
 		</script>
 		<style type="text/css" media="screen">
 			body { 
