@@ -20,40 +20,49 @@
 					return Math.sqrt( Math.pow(this.x - dot.x, 2) + Math.pow(this.y - dot.y, 2) );
 				}
 				Dot.prototype.draw_closest = function(dots) {
-					var closest_len = undefined;
-					var closest_dot = undefined;
-				
 					for( var index in dots ) {
 						var dot = dots[index];
 						var dist = this.distance( dot );
-						if( dist == 0 ) { 
-							continue; //comparing against self
-						} else if( !closest_len || (dist < closest_len) ) {
-							closest_len = dist;
-							closest_dot = dot;
+						
+						var cutoff = 50;
+						if( (dist > 0) && (dist < cutoff) ) {
+							var alpha = Math.round( (dist / cutoff) * 10 ) / 30; 
+							this.ctx.beginPath();
+							this.ctx.strokeStyle = "rgba(0,0,0," + alpha + ")";
+							this.ctx.moveTo(this.x, this.y);
+							this.ctx.lineTo(dot.x, dot.y);
+							this.ctx.stroke();
 						}
 					}
-					
-					// this.ctx.beginPath();
-					this.ctx.moveTo(this.x, this.y);
-					console.log("Line from", this.x, this.y, "to", closest_dot.x, closest_dot.y);
-					this.ctx.lineTo(closest_dot.x, closest_dot.y);
-					// this.ctx.stroke();
-					// console.log("Closest", closest_len, closest_dot);
 				}
-				ctx.beginPath();
 				
 				for( var i = 0; i < 100; i++ ) {
 					var d = new Dot(ctx);
-					d.draw();
 					dots.push(d);
 				}
-				
-				for( var index in dots ) {
-					var d = dots[index];
-					d.draw_closest(dots);
-				}
-				ctx.stroke();
+
+
+				var frame = 0;
+				var frameInterval = setInterval(function() {
+					frame += 1;
+					if( frame > 50 ) { stopInterval(frameInterval); }
+					console.log("Frame", frame);
+					
+					ctx.beginPath();
+					
+					//clear screen
+					ctx.fillStyle = "rgb(255,255,255)";
+					ctx.fillRect(0,0,400,400);
+					
+					//re-draw dots
+					for( var index in dots ) {
+						var d = dots[index];
+						d.draw();
+						d.draw_closest(dots);
+					}
+					ctx.stroke();
+					
+				}, 1200);
 			}
 		</script>
 		<style type="text/css" media="screen">
