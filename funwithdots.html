@@ -1,0 +1,68 @@
+<html>
+	<head>
+		<meta http-equiv="Content-type" content="text/html; charset=utf-8">
+		<title>Getting started with Canvas</title>
+		<script type="text/javascript" charset="utf-8">			
+						var dots = [];
+			function draw() {
+				var canvas = document.getElementById("getting_started");
+				var ctx = canvas.getContext("2d");
+
+				function Dot(ctx) {
+					this.x = Math.floor( Math.random() * 400 );
+					this.y = Math.floor( Math.random() * 400 );
+					this.ctx = ctx;
+				}
+				Dot.prototype.draw = function() {
+					this.ctx.fillRect(this.x, this.y, 2, 2);
+				}
+				Dot.prototype.distance = function(dot) { 
+					return Math.sqrt( Math.pow(this.x - dot.x, 2) + Math.pow(this.y - dot.y, 2) );
+				}
+				Dot.prototype.draw_closest = function(dots) {
+					var closest_len = undefined;
+					var closest_dot = undefined;
+				
+					for( var index in dots ) {
+						var dot = dots[index];
+						var dist = this.distance( dot );
+						if( dist == 0 ) { 
+							continue; //comparing against self
+						} else if( !closest_len || (dist < closest_len) ) {
+							closest_len = dist;
+							closest_dot = dot;
+						}
+					}
+					
+					// this.ctx.beginPath();
+					this.ctx.moveTo(this.x, this.y);
+					console.log("Line from", this.x, this.y, "to", closest_dot.x, closest_dot.y);
+					this.ctx.lineTo(closest_dot.x, closest_dot.y);
+					// this.ctx.stroke();
+					// console.log("Closest", closest_len, closest_dot);
+				}
+				ctx.beginPath();
+				
+				for( var i = 0; i < 100; i++ ) {
+					var d = new Dot(ctx);
+					d.draw();
+					dots.push(d);
+				}
+				
+				for( var index in dots ) {
+					var d = dots[index];
+					d.draw_closest(dots);
+				}
+				ctx.stroke();
+			}
+		</script>
+		<style type="text/css" media="screen">
+			#getting_started {
+				border: 1px solid black;
+			}
+		</style>
+	</head>
+	<body id="basics" onload="draw();">
+		<canvas id="getting_started" width="400" height="400"></canvas>
+	</body>
+</html>
