@@ -3,18 +3,36 @@
 		<meta http-equiv="Content-type" content="text/html; charset=utf-8">
 		<title>Getting started with Canvas</title>
 		<script type="text/javascript" charset="utf-8">			
-						var dots = [];
+			var dots = [];
+
 			function draw() {
+				var canvasWidth = 400;
+				var canvasHeight = 400;
+				
 				var canvas = document.getElementById("getting_started");
 				var ctx = canvas.getContext("2d");
-
+				
 				function Dot(ctx) {
-					this.x = Math.floor( Math.random() * 400 );
-					this.y = Math.floor( Math.random() * 400 );
+					this.x = Math.floor( Math.random() * canvasWidth );
+					this.y = Math.floor( Math.random() * canvasHeight );
+
+					this.moveX = Math.random() * 2 - 1;
+					this.moveY = Math.random() * 2 - 1;
+
 					this.ctx = ctx;
 				}
+				Dot.prototype.move = function() {
+					this.x += this.moveX;
+					this.y += this.moveY;
+					
+					if( this.x < 0 ) { this.x = canvasWidth; }
+					if( this.x > canvasWidth ) { this.x = 0; }
+					if( this.y < 0 ) { this.y = canvasHeight; }
+					if( this.y > canvasHeight ) { this.y = 0; }
+				}
 				Dot.prototype.draw = function() {
-					this.ctx.fillRect(this.x, this.y, 2, 2);
+					this.ctx.fillStyle = "rgba(200,0,0,1)";
+					this.ctx.fillRect(this.x, this.y, 1, 1);
 				}
 				Dot.prototype.distance = function(dot) { 
 					return Math.sqrt( Math.pow(this.x - dot.x, 2) + Math.pow(this.y - dot.y, 2) );
@@ -45,8 +63,7 @@
 				var frame = 0;
 				var frameInterval = setInterval(function() {
 					frame += 1;
-					if( frame > 50 ) { stopInterval(frameInterval); }
-					console.log("Frame", frame);
+					// if( frame > 500 ) { clearInterval(frameInterval); }
 					
 					ctx.beginPath();
 					
@@ -57,17 +74,20 @@
 					//re-draw dots
 					for( var index in dots ) {
 						var d = dots[index];
+						d.move();
 						d.draw();
 						d.draw_closest(dots);
 					}
 					ctx.stroke();
 					
-				}, 1200);
+				}, 50);
 			}
 		</script>
 		<style type="text/css" media="screen">
+			body { 
+				margin: 0;
+			}
 			#getting_started {
-				border: 1px solid black;
 			}
 		</style>
 	</head>
